@@ -10,7 +10,9 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
-  RefreshControl
+  RefreshControl,
+  StatusBar,
+  Platform
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -154,13 +156,17 @@ const VideoRecommendationScreen = ({ onVideoSelect, onProfileEdit }) => {
   }
 
   return (
-    <ScrollView 
-      style={styles.container}
-      showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
+    <View style={styles.container}>
+      {/* 状态栏 */}
+      <StatusBar barStyle="dark-content" backgroundColor="#f8f9fa" />
+      
+      <ScrollView 
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
       {/* 用户欢迎区域 */}
       <View style={styles.welcomeContainer}>
         <View style={styles.welcomeContent}>
@@ -176,8 +182,9 @@ const VideoRecommendationScreen = ({ onVideoSelect, onProfileEdit }) => {
         <TouchableOpacity 
           style={styles.profileButton}
           onPress={onProfileEdit}
+          activeOpacity={0.7}
         >
-          <Ionicons name="person-circle" size={24} color="#4CAF50" />
+          <Ionicons name="person-circle" size={32} color="#4CAF50" />
         </TouchableOpacity>
       </View>
 
@@ -258,6 +265,7 @@ const VideoRecommendationScreen = ({ onVideoSelect, onProfileEdit }) => {
       {/* 底部间距 */}
       <View style={styles.bottomSpacing} />
     </ScrollView>
+    </View>
   );
 };
 
@@ -265,6 +273,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f9fa',
+    paddingTop: Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 24, // 适配状态栏高度
+  },
+  
+  scrollContainer: {
+    flex: 1,
   },
   
   // 加载状态
@@ -287,6 +300,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'white',
     marginBottom: 10,
+    marginTop: 10, // 增加顶部间距
   },
   welcomeContent: {
     flex: 1,
@@ -302,7 +316,9 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   profileButton: {
-    padding: 8,
+    padding: 12, // 增加点击区域
+    borderRadius: 25,
+    backgroundColor: '#f0f8f0', // 添加背景色让图标更明显
   },
 
   // 分区样式

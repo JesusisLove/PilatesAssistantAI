@@ -8,7 +8,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Alert
+  Alert,
+  StatusBar,
+  Platform
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -140,7 +142,11 @@ const UserProfileSetup = ({ onComplete }) => {
   const progress = ((currentStep + 1) / questions.length) * 100;
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <View style={styles.container}>
+      {/* 状态栏 */}
+      <StatusBar barStyle="dark-content" backgroundColor="#f8f9fa" />
+      
+      <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
       {/* 进度条 */}
       <View style={styles.progressContainer}>
         <View style={styles.progressBar}>
@@ -231,6 +237,7 @@ const UserProfileSetup = ({ onComplete }) => {
         </Text>
       </View>
     </ScrollView>
+    </View>
   );
 };
 
@@ -238,6 +245,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f9fa',
+    paddingTop: Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 24, // 适配状态栏
+  },
+  
+  scrollContainer: {
+    flex: 1,
     padding: 20,
   },
   

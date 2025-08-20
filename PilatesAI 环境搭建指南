@@ -1,0 +1,302 @@
+# PilatesAI 环境搭建指南
+
+## 🚀 环境要求
+
+### 基础环境
+- Node.js 18+ 
+- npm 或 yarn
+- Git
+- 手机 (iOS/Android) 或模拟器
+
+### 开发工具 (推荐)
+- Visual Studio Code
+- Expo Go App (手机端测试)
+
+---
+
+## 📱 第一步：安装 Expo CLI
+
+```bash
+# 全局安装 Expo CLI
+npm install -g @expo/cli
+
+# 验证安装
+expo --version
+```
+
+---
+
+## 🔧 第二步：创建项目 (如果还没有)
+
+```bash
+# 创建新的 Expo 项目
+npx create-expo-app PilatesAI
+
+# 进入项目目录
+cd PilatesAI
+```
+
+---
+
+## 📦 第三步：安装项目依赖
+
+### 核心依赖包
+```bash
+# React Native 核心组件
+npx expo install react-native-webview
+npx expo install @react-native-async-storage/async-storage
+
+# Expo 摄像头和语音
+npx expo install expo-camera
+npx expo install expo-speech
+
+# 图标库
+npx expo install @expo/vector-icons
+
+# 状态栏控制
+npx expo install expo-status-bar
+```
+
+### 可选依赖 (后续功能)
+```bash
+# 图表库 (数据统计用)
+npm install react-native-chart-kit react-native-svg
+
+# 推送通知
+npx expo install expo-notifications
+
+# 文件系统 (如需要本地存储优化)
+npx expo install expo-file-system
+```
+
+### 完整安装命令 (一次性执行)
+```bash
+# 一次性安装所有必需依赖
+npx expo install react-native-webview @react-native-async-storage/async-storage expo-camera expo-speech @expo/vector-icons expo-status-bar
+
+# 验证安装
+npm list --depth=0
+```
+
+---
+
+## 📁 第四步：创建项目目录结构
+
+```bash
+# 创建源代码目录结构
+mkdir -p src/components/setup
+mkdir -p src/components/video  
+mkdir -p src/components/training
+mkdir -p src/services
+mkdir -p src/utils
+mkdir -p src/styles
+mkdir -p src/data
+mkdir -p src/screens
+
+# 创建资源目录
+mkdir -p assets/images
+mkdir -p assets/videos
+mkdir -p assets/sounds
+```
+
+---
+
+## 📄 第五步：创建配置文件
+
+### 1. 创建 .gitignore
+```bash
+# 在项目根目录创建 .gitignore 文件
+touch .gitignore
+# 然后复制我提供的 .gitignore 内容
+```
+
+### 2. 更新 app.json (添加摄像头权限)
+```json
+{
+  "expo": {
+    "name": "PilatesAI",
+    "slug": "pilates-ai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "PilatesAI需要使用摄像头来检测你的运动状态",
+          "microphonePermission": "PilatesAI需要使用麦克风来提供语音指导"
+        }
+      ]
+    ]
+  }
+}
+```
+
+---
+
+## 🗂️ 第六步：创建源代码文件
+
+按照以下顺序创建文件，并复制相应的代码：
+
+### 1. 服务层文件
+```bash
+# 创建并编辑这些文件，复制我提供的代码
+touch src/services/VideoLibraryService.js
+touch src/services/VoiceCoachService.js
+touch src/services/SimpleMovementDetector.js
+```
+
+### 2. 组件文件
+```bash
+# 创建组件文件
+touch src/components/setup/UserProfileSetup.js
+touch src/components/video/VideoRecommendationScreen.js
+touch src/components/video/VideoPlayerScreen.js
+touch src/components/training/SimpleCameraDetectorModern.js
+```
+
+### 3. 主应用文件
+```bash
+# 更新主应用文件
+# 编辑 App.js，复制我提供的主应用代码
+```
+
+---
+
+## 🚀 第七步：启动项目
+
+### 启动开发服务器
+```bash
+# 启动 Expo 开发服务器
+npx expo start
+
+# 或者清理缓存启动
+npx expo start --clear
+```
+
+### 在设备上测试
+1. **手机测试**：
+   - 下载 "Expo Go" App
+   - 扫描终端显示的二维码
+
+2. **iOS 模拟器**：
+   ```bash
+   # 在 macOS 上启动 iOS 模拟器
+   npx expo start --ios
+   ```
+
+3. **Android 模拟器**：
+   ```bash
+   # 启动 Android 模拟器
+   npx expo start --android
+   ```
+
+---
+
+## 🔍 第八步：验证安装
+
+### 检查依赖是否正确安装
+```bash
+# 检查主要依赖
+npm list expo-camera
+npm list react-native-webview
+npm list @react-native-async-storage/async-storage
+npm list expo-speech
+```
+
+### 常见问题排查
+```bash
+# 清理缓存
+npx expo install --fix
+
+# 重新安装 node_modules
+rm -rf node_modules
+npm install
+
+# 清理 Expo 缓存
+expo r -c
+```
+
+---
+
+## 📱 第九步：权限设置
+
+### iOS 设备
+- 首次运行时会自动请求摄像头权限
+- 在设置中确保摄像头权限已开启
+
+### Android 设备  
+- 确保应用有摄像头和麦克风权限
+- 在应用设置中手动开启权限
+
+---
+
+## 🎯 完成后的验证步骤
+
+1. ✅ 应用能正常启动
+2. ✅ 用户设置页面显示正常
+3. ✅ 摄像头权限请求正常
+4. ✅ 视频推荐页面加载正常
+5. ✅ YouTube 视频能在 WebView 中播放
+6. ✅ AI 语音功能正常工作
+
+---
+
+## 🐛 常见问题解决
+
+### Metro bundler 错误
+```bash
+# 重启 Metro
+npx expo start --clear
+```
+
+### 模块解析错误
+```bash
+# 检查文件路径是否正确
+# 确保所有 import 语句的路径匹配实际文件位置
+```
+
+### 权限问题
+```bash
+# iOS: 在设置 > 隐私 > 摄像头中开启权限
+# Android: 在应用设置 > 权限中开启摄像头权限
+```
+
+### WebView 不显示
+```bash
+# 确保安装了 react-native-webview
+npx expo install react-native-webview
+```
+
+---
+
+## 🎉 恭喜！
+
+如果以上步骤都完成了，你现在就有一个完整的 PilatesAI 应用了！
+
+### 下一步可以做：
+- 添加更多普拉提视频
+- 优化 AI 推荐算法  
+- 添加训练统计功能
+- 美化 UI 界面
+
+需要帮助吗？随时联系我！😊

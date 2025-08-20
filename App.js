@@ -8,7 +8,8 @@ import {
   StatusBar, 
   Alert,
   Text,
-  ActivityIndicator 
+  ActivityIndicator,
+  Platform 
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -187,8 +188,8 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar 
-        barStyle="dark-content" 
-        backgroundColor="#f8f9fa"
+        barStyle={currentScreen === 'player' ? "light-content" : "dark-content"}
+        backgroundColor={currentScreen === 'player' ? "#000" : "#f8f9fa"}
         hidden={currentScreen === 'player'}
       />
       {renderCurrentScreen()}
@@ -209,6 +210,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f8f9fa',
     padding: 20,
+    paddingTop: Platform.OS === 'ios' ? 64 : (StatusBar.currentHeight || 24) + 40,
   },
   appTitle: {
     fontSize: 36,

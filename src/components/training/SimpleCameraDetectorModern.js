@@ -8,7 +8,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  Dimensions
+  Dimensions,
+  StatusBar,
+  Platform
 } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
@@ -151,6 +153,7 @@ const SimpleCameraDetectorModern = React.memo(({
     // 权限还在加载中
     return (
       <View style={styles.loadingContainer}>
+        <StatusBar barStyle="dark-content" backgroundColor="#f8f9fa" />
         <Ionicons name="camera" size={50} color="#666" />
         <Text style={styles.loadingText}>正在检查摄像头权限...</Text>
       </View>
@@ -161,6 +164,7 @@ const SimpleCameraDetectorModern = React.memo(({
     // 权限未授予
     return (
       <View style={styles.permissionContainer}>
+        <StatusBar barStyle="dark-content" backgroundColor="#f8f9fa" />
         <View style={styles.permissionContent}>
           <Ionicons name="camera-off" size={80} color="#FF5722" />
           <Text style={styles.permissionTitle}>需要摄像头权限</Text>
@@ -187,6 +191,7 @@ const SimpleCameraDetectorModern = React.memo(({
   // 有摄像头权限的情况 - 显示摄像头预览
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#000" />
       {/* 摄像头预览 */}
       <View style={styles.cameraContainer}>
         <CameraView
@@ -352,6 +357,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f8f9fa',
+    paddingTop: Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 24,
   },
   loadingText: {
     fontSize: 16,
@@ -366,6 +372,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    paddingTop: Platform.OS === 'ios' ? 64 : (StatusBar.currentHeight || 24) + 20,
   },
   permissionContent: {
     alignItems: 'center',

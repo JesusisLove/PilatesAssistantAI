@@ -10,7 +10,8 @@ import {
   Alert,
   Linking,
   Dimensions,
-  StatusBar
+  StatusBar,
+  Platform
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
@@ -202,7 +203,7 @@ const VideoPlayerScreen = ({
 
   return (
     <View style={styles.container}>
-      <StatusBar hidden={isFullscreen} />
+      <StatusBar hidden={isFullscreen} barStyle="light-content" />
       
       {/* 视频播放区域 */}
       <View style={[styles.videoContainer, isFullscreen && styles.fullscreenVideo]}>
@@ -217,7 +218,7 @@ const VideoPlayerScreen = ({
           >
             <View style={styles.topControls}>
               <TouchableOpacity style={styles.backButton} onPress={onBack}>
-                <Ionicons name="chevron-back" size={24} color="white" />
+                <Ionicons name="chevron-back" size={28} color="white" />
               </TouchableOpacity>
               
               <Text style={styles.videoTitle} numberOfLines={1}>
@@ -230,7 +231,7 @@ const VideoPlayerScreen = ({
               >
                 <Ionicons 
                   name={isFullscreen ? "contract" : "expand"} 
-                  size={20} 
+                  size={24} 
                   color="white" 
                 />
               </TouchableOpacity>
@@ -312,6 +313,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
+    paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight || 0, // 视频页面特殊处理
   },
 
   // 视频区域
@@ -391,12 +393,14 @@ const styles = StyleSheet.create({
   topControls: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 40,
+    paddingTop: Platform.OS === 'ios' ? 50 : 30, // iOS刘海屏适配
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
   backButton: {
-    padding: 8,
+    padding: 12, // 增加点击区域
+    borderRadius: 25,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   videoTitle: {
     flex: 1,
@@ -406,7 +410,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
   },
   fullscreenButton: {
-    padding: 8,
+    padding: 12, // 增加点击区域
+    borderRadius: 25,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
 
   // AI监督区域
